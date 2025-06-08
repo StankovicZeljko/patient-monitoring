@@ -1,9 +1,9 @@
 databaseChangeLog:
   - include:
-      file: master/db.changelog-init.yaml
+      file: db/changelog/master/db.changelog-init.yaml
   - include:
-      file: patient/db.changelog-patient.yaml
+      file: db/changelog/patient/db.changelog-patient.yaml
   - include:
-      file: room/db.changelog-room.yaml
+      file: db/changelog/room/db.changelog-room.yaml
   - include:
-      file: motion_event/db.changelog-motion-event.yaml
+      file: db/changelog/motion_event/db.changelog-motion-event.yaml
