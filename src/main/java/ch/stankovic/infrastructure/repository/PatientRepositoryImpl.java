@@ -24,6 +24,12 @@ public class PatientRepositoryImpl implements PanacheRepository<Patient>, Patien
     }
 
     @Override
+    public List<Patient> findPatientsByNamePattern(String namePattern, String tenantId) {
+        return find("SELECT p FROM Patient p WHERE p.name LIKE ?1 AND p.tenantId = ?2",
+                "%" + namePattern + "%", tenantId).list();
+    }
+
+    @Override
     public void save(Patient patient) {
         persist(patient);
     }

@@ -27,6 +27,10 @@ public class PatientService {
         return patientRepository.findAllByTenant(tenantId);
     }
 
+    public List<Patient> searchPatientsByName(String namePattern, String tenantId) {
+        return patientRepository.findPatientsByNamePattern(namePattern, tenantId);
+    }
+
     public void createPatient(Patient patient) {
         patientRepository.save(patient);
     }

@@ -10,6 +10,7 @@ public interface PatientRepository {
 
     Optional<Patient> findById(UUID id, String tenantId);
     List<Patient> findAllByTenant(String tenantId);
+    List<Patient> findPatientsByNamePattern(String namePattern, String tenantId);
     void save(Patient patient);
     void deleteById(UUID id, String tenantId);
 }

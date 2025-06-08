@@ -27,6 +27,9 @@ public class RoomService {
         return roomRepository.findAllByTenant(tenantId);
     }
 
+    public List<Room> getRoomsByWard(String ward, String tenantId) {
+        return roomRepository.findByWard(ward, tenantId);
+    }
     public void createRoom(Room room) {
         roomRepository.save(room);
     }

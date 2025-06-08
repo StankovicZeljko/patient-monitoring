@@ -23,6 +23,11 @@ public class RoomRepositoryImpl implements PanacheRepository<Room>, RoomReposito
     }
 
     @Override
+    public List<Room> findByWard(String ward, String tenantId) {
+        return find("ward = ?1 and tenantId = ?2", ward, tenantId).list();
+    }
+
+    @Override
     public void save(Room room) {
         persist(room);
     }
