@@ -1,6 +1,7 @@
 package ch.stankovic.application.service;
 
 import ch.stankovic.domain.model.MotionEvent;
+import ch.stankovic.domain.model.MotionType;
 import jakarta.enterprise.context.ApplicationScoped;
 import ch.stankovic.domain.repository.MotionEventRepository;
 import jakarta.inject.Inject;
@@ -30,6 +31,18 @@ public class MotionEventService {
 
     public List<MotionEvent> getPatientEventsInPeriod(UUID patientId, LocalDateTime from, LocalDateTime to, String tenantId) {
         return motionEventRepository.findByPatientAndPeriod(patientId, from, to, tenantId);
+    }
+
+    public List<MotionEvent> getRecentRoomEvents(UUID roomId, String tenantId, int limit) {
+        return motionEventRepository.findRecentEventsByRoom(roomId, tenantId, limit);
+    }
+
+    public List<MotionEvent> getEventsByTypeAndWard(MotionType type, String ward, String tenantId) {
+        return motionEventRepository.findEventsByTypeAndWard(type, ward, tenantId);
+    }
+
+    public Long getRoomEventCount(UUID roomId, LocalDateTime from, LocalDateTime to, String tenantId) {
+        return motionEventRepository.countEventsByRoomAndPeriod(roomId, from, to, tenantId);
     }
 
     public void createMotionEvent(MotionEvent event) {

@@ -30,6 +30,18 @@ public class PatientRepositoryImpl implements PanacheRepository<Patient>, Patien
     }
 
     @Override
+    public Long countPatientsByTenant(String tenantId) {
+        return find("tenantId", tenantId).count();
+    }
+
+    @Override
+    public Long countMotionEventsByPatient(UUID patientId, String tenantId) {
+        return find("""
+            SELECT COUNT(me) FROM MotionEvent me 
+            WHERE me.patient.id = ?1 AND me.tenantId = ?2
+            """, patientId, tenantId).count();
+    }
+    @Override
     public void save(Patient patient) {
         persist(patient);
     }

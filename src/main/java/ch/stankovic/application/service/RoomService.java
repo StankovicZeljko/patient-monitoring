@@ -30,6 +30,15 @@ public class RoomService {
     public List<Room> getRoomsByWard(String ward, String tenantId) {
         return roomRepository.findByWard(ward, tenantId);
     }
+
+    public Long getWardRoomCount(String ward, String tenantId) {
+        return roomRepository.countRoomsByWard(ward, tenantId);
+    }
+
+    public List<Room> getMostActiveRooms(String tenantId, int limit) {
+        return roomRepository.findMostActiveRooms(tenantId, limit);
+    }
+
     public void createRoom(Room room) {
         roomRepository.save(room);
     }

@@ -31,6 +31,14 @@ public class PatientService {
         return patientRepository.findPatientsByNamePattern(namePattern, tenantId);
     }
 
+    public Long getTotalPatientCount(String tenantId) {
+        return patientRepository.countPatientsByTenant(tenantId);
+    }
+
+    public Long getPatientMotionEventCount(UUID patientId, String tenantId) {
+        return patientRepository.countMotionEventsByPatient(patientId, tenantId);
+    }
+
     public void createPatient(Patient patient) {
         patientRepository.save(patient);
     }

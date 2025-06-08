@@ -28,6 +28,23 @@ public class RoomRepositoryImpl implements PanacheRepository<Room>, RoomReposito
     }
 
     @Override
+    public Long countRoomsByWard(String ward, String tenantId) {
+        return find("ward = ?1 and tenantId = ?2", ward, tenantId).count();
+    }
+
+    @Override
+    public List<Room> findMostActiveRooms(String tenantId, int limit) {
+        // Komplexe Aggregation: Räume nach Anzahl der MotionEvents sortiert
+        return find("""
+            SELECT r FROM Room r 
+            LEFT JOIN r.motionEvents me 
+            WHERE r.tenantId = ?1 
+            GROUP BY r.id, r.roomNumber, r.ward, r.tenantId 
+            ORDER BY COUNT(me) DESC
+            """, tenantId).page(0, limit).list();
+    }
+
+    @Override
     public void save(Room room) {
         persist(room);
     }

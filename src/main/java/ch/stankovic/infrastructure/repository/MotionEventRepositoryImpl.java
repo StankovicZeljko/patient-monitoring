@@ -1,6 +1,7 @@
 package ch.stankovic.infrastructure.repository;
 
 import ch.stankovic.domain.model.MotionEvent;
+import ch.stankovic.domain.model.MotionType;
 import ch.stankovic.domain.repository.MotionEventRepository;
 import io.quarkus.hibernate.orm.panache.PanacheRepository;
 import jakarta.enterprise.context.ApplicationScoped;
@@ -32,6 +33,41 @@ public class MotionEventRepositoryImpl  implements PanacheRepository<MotionEvent
             AND me.tenantId = ?4 
             ORDER BY me.timestamp DESC
             """, patientId, from, to, tenantId).list();
+    }
+
+    @Override
+    public List<MotionEvent> findRecentEventsByRoom(UUID roomId, String tenantId, int limit) {
+        return find("""
+            SELECT me FROM MotionEvent me 
+            JOIN FETCH me.patient p 
+            WHERE me.room.id = ?1 
+            AND me.tenantId = ?2 
+            ORDER BY me.timestamp DESC
+            """, roomId, tenantId).page(0, limit).list();
+    }
+
+    @Override
+    public List<MotionEvent> findEventsByTypeAndWard(MotionType type, String ward, String tenantId) {
+        // JOIN über MotionEvent -> Room -> Ward
+        return find("""
+            SELECT me FROM MotionEvent me 
+            JOIN FETCH me.patient p 
+            JOIN FETCH me.room r 
+            WHERE me.type = ?1 
+            AND r.ward = ?2 
+            AND me.tenantId = ?3 
+            ORDER BY me.timestamp DESC
+            """, type, ward, tenantId).list();
+    }
+
+    @Override
+    public Long countEventsByRoomAndPeriod(UUID roomId, LocalDateTime from, LocalDateTime to, String tenantId) {
+        return find("""
+            SELECT COUNT(me) FROM MotionEvent me 
+            WHERE me.room.id = ?1 
+            AND me.timestamp BETWEEN ?2 AND ?3 
+            AND me.tenantId = ?4
+            """, roomId, from, to, tenantId).count();
     }
 
     @Override
