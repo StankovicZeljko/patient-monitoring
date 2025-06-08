@@ -1,0 +1,9 @@
+databaseChangeLog:
+  - include:
+      file: master/db.changelog-init.yaml
+  - include:
+      file: patient/db.changelog-patient.yaml
+  - include:
+      file: room/db.changelog-room.yaml
+  - include:
+      file: motion_event/db.changelog-motion-event.yaml
